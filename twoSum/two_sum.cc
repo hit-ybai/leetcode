@@ -1,10 +1,12 @@
 #include <vector>
-#include <map>
+#include <unordered_map>
+
+using namespace std;
 
 class Solution {
 public:
     vector<int> twoSum(vector<int> &numbers, int target) {
-        std::map<int, int> num_idx_map;
+        std::unordered_map<int, int> num_idx_map;
         auto n = numbers.size();
         for (int i = 0; i < n; i++)
             num_idx_map[numbers[i]] = i + 1;
