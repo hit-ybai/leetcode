@@ -1,26 +1,45 @@
 class Solution {
 public:
-    int max = 0;
-    queue<char> current_sub_str;
-    bool flag[128] = { false };
-    
     int lengthOfLongestSubstring(string s) {
-        size_t length = s.length();
-        if (0 == length) return int(length);
+        queue<char> current_sub_str;
+        int subStringMaxLength = 0;
         
-        for (int i = 0; i < length - 1; i++) {
-            if ( flag[int( s[i] )] ) {
-                if (max < current_sub_str.size()) max = int(current_sub_str.size());
-                while ((current_sub_str.front() != s[i])) {
-                    flag[int( current_sub_str.front() )] = false;
-                    current_sub_str.pop();
-                }
-                current_sub_str.pop();
-            } else flag[int( s[i] )] = true;
-
-            current_sub_str.push(s[i]);
+        for (auto it = s.begin() ; it < s.end(); it++) {
+            char current_alphabet = *it;
+            
+            if (is_alphabet_exist(current_alphabet)) {
+                sync_max_value( subStringMaxLength, current_sub_str.size() );
+                pop_sub_string_until_alphabet( current_alphabet, current_sub_str );
+            } else {
+                mark_alphabet(current_alphabet);
+            }
+            
+            current_sub_str.push(current_alphabet);
         }
-        int is_last_char_available = !flag[int( s[length - 1] )];
-        return ( max > current_sub_str.size() ? max : int(current_sub_str.size()) + is_last_char_available );
+        sync_max_value( subStringMaxLength, current_sub_str.size() );
+        return subStringMaxLength;
+    }
+private:
+    static const int SIZE_OF_ASCII    = 128;
+    bool alphabet_flag[SIZE_OF_ASCII] = { false };
+    
+    bool is_alphabet_exist(char alphabet) {
+        return alphabet_flag[int(alphabet)];
+    }
+    void sync_max_value(int &subStringMaxLength, size_t currentSubStringLength) {
+        if (currentSubStringLength > subStringMaxLength) {
+            subStringMaxLength = int(currentSubStringLength);
+        }
+    }
+    void pop_sub_string_until_alphabet(char alphabet, queue<char> &current_sub_str) {
+        for ( char current_alphabet = current_sub_str.front(); current_alphabet != alphabet;
+            alphabet_flag[int(current_alphabet)] = false,
+            current_sub_str.pop(),
+            current_alphabet = current_sub_str.front()
+        );
+        current_sub_str.pop();
+    }
+    void mark_alphabet(char alphabet) {
+        alphabet_flag[int(alphabet)] = true;
     }
 };
