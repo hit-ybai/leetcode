@@ -19,7 +19,7 @@ public:
         while (true) {
             sum        = getNodeVal(l1) + getNodeVal(l2) + carry_flag;
             carry_flag = ( sum >= 10 );
-            sum        = ( sum < 10 ) ? sum :  ( sum - 10 );
+            sum        = ( sum < 10 ) ? sum : ( sum - 10 );
             
             if (ans_pointer) {
                 ans_pointer->next = new ListNode(sum);
