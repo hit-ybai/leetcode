@@ -53,11 +53,11 @@ public:
         return ans_head;
     }
 private:
-    int getNodeVal(ListNode* node) {
+    int getNodeVal(const ListNode* node) {
         return node ? node->val : 0;
     }
     
-    int getSum(int val1, int val2, bool &carry_flag) {
+    int getSum(const int val1, const int val2, bool &carry_flag) {
         int sum = val1 + val2 + carry_flag;
         carry_flag = (sum >= 10);
         return sum % 10;
